@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Hello World</title>
+	<!-- jQuery -->
+    <script src="scripts/jquery-3.2.1.js" type="text/javascript"></script>
+    
+    <!-- Material CSS -->
+    <link rel="stylesheet"
+          href="node_modules/material-components-web/dist/material-components-web.css">
+          
+    <style type="text/css">
+    
+    </style>
+    
+    <script>
+    $().ready(function(){
+    	$("#login").click(function() {
+			alert("Ajax begin");
+			var userName = $("#account").val();
+			var password = $("#password").val();
+			console.log(userName + password);
+			$.ajax({
+				type: "post",
+				url: "testConnect",
+				data: {
+					userName: userName,
+					password: password
+					},
+				dataType: "json",
+				success: function(data) {
+					alert(data.result);
+				}
+			});
+		});
+		$("#mysql").click(function () {
+            $.ajax({
+                type: "post",
+                url: "queryNames",
+                data: {},
+                dataType: "json",
+                success: function(data) {
+                    var size = data.size;
+                    console.log("size: "+size);
+                    var name1 = data.name1;
+                    console.log("name1: " + name1);
+                    var name2 = data.name2;
+                    console.log("name2: " + name2);
+                    var name0 = data.name0;
+                    console.log("name0: " + name0);
+                }
+            });
+        });
+    });
+	</script>
+</head>
+<body>
+   <h1>Hello World From Struts2,Ajax,Mysql</h1>
+   <div class="mdc-textfield" data-mdc-auto-init="MDCTextfield">
+   		<input type="text" class="mdc-textfield__input" id="account">
+        <label for="account" class="mdc-textfield__label">usename</label>
+   </div>
+   <div class="mdc-textfield" data-mdc-auto-init="MDCTextfield">
+        <input type="password" class="mdc-textfield__input" id="password">
+        <label for="password" class="mdc-textfield__label">password</label>
+   </div>
+   <button id="login" class="mdc-button mdc" data-mdc-auto-init="MDCRipple">login</button>
+	<button id="mysql" class="mdc-button mdc" data-mdc-auto-init="MDCRipple">TestMysql</button>
+   <script src="node_modules/material-components-web/dist/material-components-web.js"></script>
+   <script>mdc.autoInit()</script>
+</body>
+</html>

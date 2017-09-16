@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+<constant name="struts.devMode" value="true" />
+   <package name="helloworld" extends="json-default">
+      <!--  包package需要继承(extends)自 json-default -->
+      
+      <action name="hello" 
+            class="com.yumi.test.SynAction" 
+            method="execute">
+            <result name="success">/helloWorld.jsp</result>
+            <result name="error">/accessDenied.jsp</result>
+      </action>
+      
+      <!-- 异步请求Action -->
+      <action name="testConnect" 
+            class="com.yumi.test.UIAjaxAction" 
+            method="login">
+            <!-- result的type属性为"json" -->
+            <result name="success" type="json">
+            	<!-- name="root"表示唯一输出的 -->
+            	<!-- map表示输出的对象与Action类中的字段匹配 -->
+            	<param name="root">map</param>
+            </result>
+            <result name="error">
+            	<param name="root">map</param>
+            </result>
+      </action>
+      
+      
+      <action name="queryNames" 
+            class="com.yumi.test.UIAjaxAction" 
+            method="queryNameFromMysql">
+            <!-- result的type属性为"json" -->
+            <result name="success" type="json">
+            	<!-- name="root"表示唯一输出的 -->
+            	<!-- map表示输出的对象与Action类中的字段匹配 -->
+            	<param name="root">map</param>
+            </result>
+      </action>
+   </package>
+</struts>
