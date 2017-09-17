@@ -1,20 +1,375 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd" "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-<title>Hello World</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,  initial-scale=1">
+    <title>Index page</title>
 	<!-- jQuery -->
     <script src="scripts/jquery-3.2.1.js" type="text/javascript"></script>
-    
+    <script src="scripts/jquery-ui.js" type="text/javascript"></script>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
     <!-- Material CSS -->
     <link rel="stylesheet"
           href="node_modules/material-components-web/dist/material-components-web.css">
-          
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
     <style type="text/css">
-    
+        #bg-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #bg-container > * {
+            position: absolute;
+        }
+
+        #bg-container img{
+            width: 100%;
+            height: auto;
+        }
+
+        #bg-container #bg-shade {
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            opacity: 0.3;
+        }
+
+        #top-bar-container {
+            position: fixed;
+            width: 100%;
+            height: 50px;
+            z-index: 10;
+        }
+
+        #top-bar-container #top-bar {
+            position: absolute;
+            color: white;
+            width: 100%;
+            height: 100%;
+        }
+
+        #top-bar-container #top-bar-shadow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #3f51b5;
+            box-shadow: 0 2px 2px 0px rgba(0,0,0,.1),
+            0 3px 4px 0px rgba(0,0,0,.1),
+            0 4px 6px 0px rgba(0,0,0,.1);
+            display: none;
+        }
+
+        #top-bar-container #top-bar span{
+            margin-left: 20px;
+            line-height: 50px;
+            font-weight: lighter;
+        }
+
+        .custom-input {
+            /* 样式自定义 */
+
+            /* 去掉原有样式 */
+            -web-kit-appearance: none;
+            -moz-appearance: none;
+            background-color: transparent;
+
+            /* 设置圆角边框 */
+            border-radius: 4px;
+            border: 1px solid #fff;
+            outline: 0;
+
+            /* 设置字体属性 */
+            color: #fff;
+        }
+
+        #top-bar-container #top-bar .custom-input {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -18px;
+            margin-left: -100px;
+            width: 200px;
+            height: 36px;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        #top-bar-container #top-bar .icon {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-top: -12px;
+            margin-left: 65px;
+            width: 24px;
+            height: 24px;
+        }
+
+
+        #top-bar-container #top-bar .avatar {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            margin-top: -1.5rem;
+            width: 3rem;
+            height: 3rem;
+            background-color: #0f0f0f;
+        }
+
+        #top-bar-container #top-bar-search-container {
+            display: none;
+        }
+
+        .avatar {
+            border-radius: 50%;
+        }
+
+        ::-webkit-input-placeholder { /* WebKit browsers */
+            color:#fff;
+            font-size: 18px;
+            font-weight: lighter;
+        }
+
+        :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+            color:#fff;
+            font-size: 18px;
+            font-weight: lighter;
+        }
+
+        ::-moz-placeholder { /* Mozilla Firefox 19+ */
+            color:#fff;
+            font-size: 18px;
+            font-weight: lighter;
+        }
+
+        :-ms-input-placeholder { /* Internet Explorer 10+ */
+            color:#fff;
+            font-size: 18px;
+            font-weight: lighter;
+        }
+
+        #index-search-container {
+            display: none;
+        }
+
+        #index-search-container .custom-input {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -25px;
+            margin-left: -300px;
+            width: 600px;
+            height: 50px;
+            padding: 20px;
+            font-size: 18px;
+        }
+
+        #index-search-container .icon {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-top: -15px;
+            margin-left: 260px;
+            width: 30px;
+            height: 30px;
+        }
+
+        #index-search-container h3 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -115px;
+            margin-top: -100px;
+            color: #fff;
+            font-weight: lighter;
+        }
+
+        #outer-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            margin-top: 50px;
+            z-index: 1;
+            overflow: auto;
+        }
+
+        #search-result-container {
+            position: fixed;
+            margin-top: 100%;
+            width: 100%;
+            height: 500%;
+            background-color: rgb(241,241,241);
+            padding-bottom: 200px;
+        }
+
+        #scroll-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            margin-top: 10%;
+            z-index: 0;
+            padding-left: 8%;
+            padding-right: 8%;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),
+            0 3px 1px -2px rgba(0,0,0,.2),
+            0 1px 5px 0 rgba(0,0,0,.12);
+            padding: 20px;
+        }
+
+        .book-card {
+            position: relative;
+            left: 50%;
+            margin-left: -125px;
+            margin-bottom: 50px;
+            width: 250px;
+            height: 380px;
+            transition: box-shadow 180ms;
+            -webkit-transition : box-shadow 180ms;
+            -moz-transition: box-shadow 180ms; /* Firefox 4 */
+            -webkit-transition: box-shadow 180ms; /* Safari 和 Chrome */
+            -o-transition: box-shadow 180ms; /* Opera */
+            cursor: pointer;
+            display: none;
+        }
+
+        .book-card:hover {/* 水平 垂直 模糊距离 阴影尺寸*/
+            box-shadow: 0 5px 30px 0 rgba(0,0,0,.18),
+            0 6px 20px -2px rgba(0,0,0,.25),
+            0 4px 40px 0 rgba(0,0,0,.18);
+        }
+
+        .book-card .book-cover {
+            position: relative;
+            width: 100%;
+            height: auto;
+        }
+
+        .book-card .book-name {
+            position: relative;
+        }
+
+        .book-card .book-writer {
+            position: relative;
+        }
+
+        #info-card-container {
+            position: fixed;
+            z-index: 9;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            overflow-y: scroll;
+            overflow-x: hidden;
+            display: none;
+        }
+
+        #info-card-container #info-card {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: 30%;
+            margin-left: -300px;
+            margin-bottom: 100px;
+            width: 600px;
+            height: max-content;
+            padding: 30px 50px 0px 30px;
+            opacity: 0;
+        }
+
+        #info-card-container #close-info {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            top: 50%;
+            left: 50%;
+            margin-top: 40px;
+            margin-left: 320px;
+        }
+
+        #info-card-container #info-card #book-info {
+            padding-bottom: 35px;
+            border-bottom: solid 1px #d6d6d6;
+        }
+
+        #info-card-container #info-card #book-info .book-cover{
+            width: 150px;
+            height: auto;
+            float: left;
+            margin-right: 20px;
+        }
+
+        #info-card-container #info-card .book-name {
+            margin-top: 0px;
+        }
+
+        #info-card-container #info-card .book-writer{
+            margin-bottom: 20px;
+        }
+
+        #info-card-container #info-card .price{
+            position: absolute;
+            top: 140px;
+            left: 400px;
+            margin-bottom: 20px;
+            font-weight: lighter;
+        }
+
+        #info-card-container #info-card p {
+            margin-bottom: 0px;
+        }
+
+        #info-card-container #info-card #book-intro {
+            padding-bottom: 20px;
+
+        }
+
+        #info-card-container #info-card #writer-intro {
+            padding-bottom: 20px;
+        }
+
+        #info-card-container #info-card #others-book-list {
+            width: 100%;
+            height: 150px;
+            margin-bottom: 60px;
+        }
+
+        #info-card-container #info-card #others-book-list .horizontal-list {
+            overflow-x: auto;
+            overflow-y: hidden;
+            height: 100%;
+            width: auto;
+            white-space: nowrap;
+        }
+
+        #info-card-container #info-card #others-book-list .horizontal-list .other-book {
+            display:inline-table;
+            width: 100px;
+            height: 130px;
+        }
+
+        #info-card-container #info-card #btn-group {
+            padding-bottom: 20px;
+            margin-left: -16px;
+        }
     </style>
-    
+
     <script>
     $().ready(function(){
+        /* ajax example */
+        /*
     	$("#login").click(function() {
 			alert("Ajax begin");
 			var userName = $("#account").val();
@@ -51,10 +406,72 @@
                 }
             });
         });
+        */
+        $("#index-search-container").delay(400);
+        $("#index-search-container").fadeIn(400);
+
+        $(".icon").click(function () {
+            $("#search-result-container").animate({
+                marginTop: "0%",
+            },300,function () {
+                $("#search-result-container").css("position","absolute");
+                $(".book-card").delay(500);
+                $(".book-card").fadeIn(400,function () {
+                    $("#search-result-container").css("height","auto");
+                    $("#scroll-container").css("height","auto");
+                })
+            });
+            $("#top-bar-container #top-bar-shadow").delay(100);
+            $("#top-bar-container #top-bar-shadow").fadeIn(200);
+            $("#top-bar-search-container").delay(100);
+            $("#top-bar-search-container").fadeIn(200);
+        });
+
+        var open_card_y = 0;
+        $(".book-card").click(function () {
+
+            open_card_y = $("#outer-container").scrollTop();
+            $("#search-result-container").css({
+                "position":"fixed",
+                "padding-right":"17px"
+            });
+            $("#scroll-container").css({
+                "margin-top": "+=" + (-open_card_y) +"px"
+            });
+
+            $("#info-card-container").fadeIn(300,function () {
+                $("#info-card-container #info-card").animate({
+                    marginTop: "0%",
+                    opacity: 1
+                },400,"easeOutExpo");
+            });
+            
+            $("#info-card-container").scrollTop(0);
+        });
+
+        $("#close-info").click(function() {
+            $("#info-card-container #info-card").animate({
+                marginTop: "+=30%",
+                opacity: 0
+            },400,"easeInCubic",function () {
+                $("#info-card-container #info-card").css("margin-top","30%");
+                $("#info-card-container").fadeOut();
+                $("#search-result-container").css({
+                    "position":"absolute",
+                    "padding-right":"0px"
+                });
+                $("#scroll-container").css({
+                    "margin-top": "10%"
+                });
+                $("#outer-container").scrollTop(open_card_y);
+            });
+        });
+
     });
 	</script>
 </head>
-<body>
+<body class="mdc-typography">
+    <!--
    <h1>Hello World From Struts2,Ajax,Mysql</h1>
    <div class="mdc-textfield" data-mdc-auto-init="MDCTextfield">
    		<input type="text" class="mdc-textfield__input" id="account">
@@ -65,7 +482,186 @@
         <label for="password" class="mdc-textfield__label">password</label>
    </div>
    <button id="login" class="mdc-button mdc" data-mdc-auto-init="MDCRipple">login</button>
-	<button id="mysql" class="mdc-button mdc" data-mdc-auto-init="MDCRipple">TestMysql</button>
+   <button id="mysql" class="mdc-button mdc" data-mdc-auto-init="MDCRipple">TestMysql</button>
+    -->
+
+    <div id="bg-container">
+        <img src="custom/index-page/img/bg-1.jpg"/>
+        <div id="bg-shade"></div>
+    </div>
+
+    <div id="top-bar-container">
+        <div id="top-bar-shadow">
+
+        </div>
+        <div id="top-bar">
+            <span class="mdc-typography--display2">Booknd.site</span>
+            <div id="top-bar-search-container">
+                <input type="text" class="custom-input"/>
+                <img class="icon" src="custom/index-page/icon/search.png" />
+            </div>
+            <img class="avatar" src="custom/index-page/img/avatar-default.jpeg"/>
+        </div>
+    </div>
+
+    <div id="outer-container">
+
+        <div id="index-search-container">
+            <h3 class="mdc-typography--display3">Book Next Door</h3>
+            <input type="text" class="custom-input" placeholder="输入书名或作者进行查询"/>
+            <img class="icon" src="custom/index-page/icon/search.png" />
+        </div>
+
+        <div id="search-result-container">
+            <div id="scroll-container">
+                <div class="col-md-3">
+                    <div class="card book-card">
+                        <img class="book-cover" src="custom/index-page/img/book1.jpg">
+                        <h3 class="book-name mdc-typography--display1">用Python写网络爬虫</h3>
+                        <h4 class="book-writer">理查德·劳森</h4>
+                    </div>
+                    <div class="card book-card">
+                        <img class="book-cover" src="custom/index-page/img/book1.jpg">
+                        <h3 class="book-name mdc-typography--display1">用Python写网络爬虫</h3>
+                        <h4 class="book-writer">理查德·劳森</h4>
+                    </div>
+                    <div class="card book-card">
+                        <img class="book-cover" src="custom/index-page/img/book1.jpg">
+                        <h3 class="book-name mdc-typography--display1">用Python写网络爬虫</h3>
+                        <h4 class="book-writer">理查德·劳森</h4>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card book-card">
+                        <img class="book-cover" src="custom/index-page/img/book1.jpg">
+                        <h3 class="book-name mdc-typography--display1">用Python写网络爬虫</h3>
+                        <h4 class="book-writer">理查德·劳森</h4>
+                    </div>
+                    <div class="card book-card">
+                        <img class="book-cover" src="custom/index-page/img/book1.jpg">
+                        <h3 class="book-name mdc-typography--display1">用Python写网络爬虫</h3>
+                        <h4 class="book-writer">理查德·劳森</h4>
+                    </div>
+                    <div class="card book-card">
+                        <img class="book-cover" src="custom/index-page/img/book1.jpg">
+                        <h3 class="book-name mdc-typography--display1">用Python写网络爬虫</h3>
+                        <h4 class="book-writer">理查德·劳森</h4>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card book-card">
+                        <img class="book-cover" src="custom/index-page/img/book1.jpg">
+                        <h3 class="book-name mdc-typography--display1">用Python写网络爬虫</h3>
+                        <h4 class="book-writer">理查德·劳森</h4>
+                    </div>
+                    <div class="card book-card">
+                        <img class="book-cover" src="custom/index-page/img/book1.jpg">
+                        <h3 class="book-name mdc-typography--display1">用Python写网络爬虫</h3>
+                        <h4 class="book-writer">理查德·劳森</h4>
+                    </div>
+                    <div class="card book-card">
+                        <img class="book-cover" src="custom/index-page/img/book1.jpg">
+                        <h3 class="book-name mdc-typography--display1">用Python写网络爬虫</h3>
+                        <h4 class="book-writer">理查德·劳森</h4>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card book-card">
+                        <img class="book-cover" src="custom/index-page/img/book1.jpg">
+                        <h3 class="book-name mdc-typography--display1">用Python写网络爬虫</h3>
+                        <h4 class="book-writer">理查德·劳森</h4>
+                    </div>
+                    <div class="card book-card">
+                        <img class="book-cover" src="custom/index-page/img/book1.jpg">
+                        <h3 class="book-name mdc-typography--display1">用Python写网络爬虫</h3>
+                        <h4 class="book-writer">理查德·劳森</h4>
+                    </div>
+                    <div class="card book-card">
+                        <img class="book-cover" src="custom/index-page/img/book1.jpg">
+                        <h3 class="book-name mdc-typography--display1">用Python写网络爬虫</h3>
+                        <h4 class="book-writer">理查德·劳森</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="info-card-container">
+            <div id="info-card" class="card">
+                <div id="book-info">
+                    <img src="custom/index-page/img/book1.jpg" class="book-cover"/>
+                    <h3 class="book-name mdc-typography--display3">用Python写网络爬虫</h3>
+                    <p class="book-writer mdc-typography--display2">理查德·劳森</p>
+                    <p class="publisher mdc-typography--headline">人民邮电出版社</p>
+                    <p class="publish-date mdc-typography--headline">2017/09/07</p>
+                    <p class="isbn mdc-typography--headline">ISBN:7-309-04547-5</p>
+                    <p class="price mdc-typography--display4">￥30</p>
+                </div>
+                <div id="book-intro">
+                    <h3 class="title">简介</h3>
+                    <p class="content">
+                            《用Python写网络爬虫》作为使用Python来爬取网络数据的杰
+                        出指南，讲解了从静态页面爬取数据的方法以及使用缓存来管理服
+                        务器负载的方法。<br />
+                            此外，本书还介绍了如何使用AJAX URL和Firebug扩展来爬取
+                        数据，以及有关爬取技术的更多真相，比如使用浏览器渲染、管理
+                        cookie、通过提交表单从受验证码保护的复杂网站中抽取数据等。
+                        本书使用Scrapy创建了一个高级网络爬虫，并对一些真实的网
+                        站进行了爬取。<br />
+                    </p>
+                </div>
+                <div id="writer-intro">
+                    <h3 class="title">理查德·劳森</h3>
+                    <p class="content">
+                        An investor and data scientist with a deep background as quantitative
+                        investor and researcher. Specialised in the application of artificial
+                        intelligence to managing investments within capital markets.<br />
+                        Extensive experience implementing the quant-data pipeline and
+                        building multi-factor quantitative models in a global setting.
+                        Started career on the sell side at top tier names such as JPMorgan
+                        and Macquarie, then broadened to funds management and hedge
+                        funds.<br />
+                        At Schroders, was in a team managing more than 40 billion USD.
+                        My role was to invest in globally listed companies based on
+                        mathematical models of company and industry characteristics.
+                        Passionate about data science and innovation, and advises startups
+                        on financial modelling.<br />
+                    </p>
+                </div>
+                <div id="others-book-list">
+                    <h3 class="title">其他书籍</h3>
+                    <div class="horizontal-list">
+                        <div class="other-book">
+
+                        </div>
+                        <div class="other-book">
+
+                        </div>
+                        <div class="other-book">
+
+                        </div>
+                        <div class="other-book">
+
+                        </div>
+                        <div class="other-book">
+
+                        </div>
+                        <div class="other-book">
+
+                        </div>
+                        <div class="other-book">
+
+                        </div>
+                    </div>
+                </div>
+                <div id="btn-group">
+                    <button id="action1" class="mdc-button mdc" data-mdc-auto-init="MDCRipple" >Action1</button>
+                    <button id="action2" class="mdc-button mdc" data-mdc-auto-init="MDCRipple" >Action2</button>
+                </div>
+            </div>
+            <img id="close-info" src="custom/index-page/icon/close.png"/>
+        </div>
+    </div>
+
    <script src="node_modules/material-components-web/dist/material-components-web.js"></script>
    <script>mdc.autoInit()</script>
 </body>
