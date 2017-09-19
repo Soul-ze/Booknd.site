@@ -59,15 +59,16 @@
         #bg-container #user-info-container .avatar {
             width: 120px;
             height: auto;
+            margin-bottom: 5px;
         }
 
         #bg-container #user-info-container .user-name {
-            font-size: 30px;
+            font-size: 25px;
             margin-bottom: 0px;
         }
 
         #bg-container #user-info-container .user-intro {
-            font-size: 20px;
+            font-size: 15px;
         }
 
         #top-bar-container {
@@ -208,7 +209,7 @@
 
         #tab-frame .outer-container {
             position: fixed;
-            width: 104%;
+            width: 100%;
             height: 100%;
             overflow-y: auto;
             overflow-x: hidden;
@@ -216,11 +217,10 @@
 
         #tab-frame .outer-container .scroll-container {
             position: absolute;
-            width: 104%;
+            width: 100%;
             height: 100%;
             background-color: #fff;
             margin-top: 300px;
-            padding-right: 4%;
             overflow-y: hidden;
             overflow-x: hidden;
             z-index: 1;
@@ -237,10 +237,33 @@
 
         #tab-frame .outer-container .scroll-container .tab-container {
             position: absolute;
-            width: 95%;
+            width: 100%;
             height: 100%;
             background-color: #fff;
-            padding-right: 17px;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),
+            0 3px 1px -2px rgba(0,0,0,.2),
+            0 1px 5px 0 rgba(0,0,0,.12);
+            padding: 20px;
+        }
+
+        #tab-frame .outer-container .scroll-container .tab-container .card {
+            position: relative;
+            top: 30%;
+            left: 50%;
+            margin-top: -50px;
+            margin-left: -150px;
+            width: 300px;
+            height: 100px;
+            padding: 20px;
+            text-align: center;
+            font-size: 20px;
+            background-color: #3f51b5;
+            color: white;
         }
 
         #tab-frame #tab-btn-group {
@@ -261,6 +284,21 @@
 
     <script type="text/javascript">
         $().ready(function(){
+            function ScrollHide() {
+                $(".outer-container").css("width","100%");
+                $(".scroll-container").css("width","100%");
+                $(".tab-container").css("width","100%");
+                $(".outer-container").css("width","+=17px");
+                $(".scroll-container").css("width","+=17px");
+                $(".tab-container").css("width","-=17px");
+            }
+
+            ScrollHide();
+
+            $(window).resize(function() {
+                ScrollHide();
+            });
+
             $(".outer-container").scroll(function () {
                 if($(".outer-container").scrollTop() >= 300) {
                     $("#top-bar-container #top-bar-shadow ").fadeIn();
@@ -269,9 +307,6 @@
                     $("#tab-frame .outer-container .scroll-container").css({
                         overflowY: "auto"
                     });
-                    $("#tab-frame .outer-container .scroll-container .tab-container").css({
-                        paddingRight: "0px"
-                    });
                 }
                 else {
                     $("#top-bar-container #top-bar-shadow ").fadeOut();
@@ -279,9 +314,6 @@
                     $("#top-bar-btn-container").fadeOut();
                     $("#tab-frame .outer-container .scroll-container").css({
                         overflowY: "hidden"
-                    });
-                    $("#tab-frame .outer-container .scroll-container .tab-container").css({
-                        paddingRight: "17px"
                     });
                     $(".outer-container .scroll-container").scrollTop(0);
                 }
@@ -293,7 +325,7 @@
                     var distance = $(this).index() - before_btn;
                     $("#tab-frame .outer-container .scroll-container").animate({
                         left: "-=" + distance + "00%"
-                    },300,"swing");
+                    },500,"easeInOutCubic");
                     before_btn = $(this).index();
                 }
             });
@@ -303,21 +335,21 @@
 <body class="mdc-typography">
 
     <div id="top-bar-container">
-    <div id="top-bar-shadow"></div>
-    <div id="top-bar">
-        <span class="mdc-typography--display2">Booknd.site</span>
-        <div id="top-bar-btn-container">
-            <button  class="mdc-button mdc tab-btn" data-mdc-auto-init="MDCRipple" >动态</button>
-            <button  class="mdc-button mdc tab-btn" data-mdc-auto-init="MDCRipple" >书库</button>
-            <button  class="mdc-button mdc tab-btn" data-mdc-auto-init="MDCRipple" >个人</button>
+        <div id="top-bar-shadow"></div>
+        <div id="top-bar">
+            <span class="mdc-typography--display2">Booknd.site</span>
+            <div id="top-bar-btn-container">
+                <button  class="mdc-button mdc tab-btn" data-mdc-auto-init="MDCRipple" >动态</button>
+                <button  class="mdc-button mdc tab-btn" data-mdc-auto-init="MDCRipple" >书库</button>
+                <button  class="mdc-button mdc tab-btn" data-mdc-auto-init="MDCRipple" >个人</button>
+            </div>
+            <div id="top-bar-search-container">
+                <input type="text" class="custom-input"/>
+                <img class="icon" src="custom/index-page/icon/search.png" />
+            </div>
+            <img class="avatar" src="custom/index-page/img/avatar-default.jpeg"/>
         </div>
-        <div id="top-bar-search-container">
-            <input type="text" class="custom-input"/>
-            <img class="icon" src="custom/index-page/icon/search.png" />
-        </div>
-        <img class="avatar" src="custom/index-page/img/avatar-default.jpeg"/>
     </div>
-</div>
 
     <div id="tab-frame">
         <div id="bg-container">
@@ -325,22 +357,34 @@
             <div id="bg-shade"></div>
             <div id="user-info-container">
                 <img src="custom/home-page/img/avatar-default.jpeg" class="avatar"/>
-                <p class="user-name">Username</p>
-                <p class="user-intro">Some intro ;D</p>
+                <p class="user-name">Miku大法好</p>
+                <p class="user-intro">宇宙第一公主殿下\(•ㅂ•)/♥</p>
             </div>
         </div>
 
         <div class="outer-container">
             <div class="scroll-container">
                 <div class="tab-container">
+                    <div class="card">
+                        施工中<br>
+                        (´･ω･｀)
+                    </div>
                 </div>
             </div>
             <div class="scroll-container">
                 <div class="tab-container">
+                    <div class="card">
+                        都给你说了在施工中<br>
+                        (ノ｀Д´)ノ
+                    </div>
                 </div>
             </div>
             <div class="scroll-container">
                 <div class="tab-container">
+                    <div class="card">
+                        就是不听话呢<br>
+                        (*´Д｀*)
+                    </div>
                 </div>
             </div>
             <div id="tab-btn-group">
@@ -349,8 +393,9 @@
                 <button class="mdc-button mdc tab-btn" data-mdc-auto-init="MDCRipple" >个人</button>
             </div>
         </div>
-
-
     </div>
+
+    <script src="node_modules/material-components-web/dist/material-components-web.js"></script>
+    <script>mdc.autoInit()</script>
 </body>
 </html>
