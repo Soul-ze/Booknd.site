@@ -1,0 +1,400 @@
+#top-bar-container {
+    position: fixed;
+    width: 100%;
+    height: 50px;
+    z-index: 10;
+}
+
+#top-bar-container #top-bar {
+    position: absolute;
+    color: white;
+    width: 100%;
+    height: 100%;
+}
+
+#top-bar-container #top-bar-shadow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #3f51b5;
+    box-shadow: 0 2px 2px 0px rgba(0,0,0,.1),
+    0 3px 4px 0px rgba(0,0,0,.1),
+    0 4px 6px 0px rgba(0,0,0,.1);
+}
+
+#top-bar-container #top-bar span{
+    margin-left: 20px;
+    line-height: 50px;
+    font-weight: lighter;
+}
+
+#top-bar-container #top-bar .avatar {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    margin-top: -1.5rem;
+    width: 3rem;
+    height: 3rem;
+    background-color: #0f0f0f;
+}
+
+.avatar {
+    border-radius: 50%;
+}
+
+#outer-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    margin-top: 50px;
+    z-index: 1;
+    overflow: auto;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),
+    0 3px 1px -2px rgba(0,0,0,.2),
+    0 1px 5px 0 rgba(0,0,0,.12);
+    padding: 20px;
+}
+
+#info-card-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(238, 238, 238);
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#info-card-container #info-card {
+    position: absolute;
+    top: 5%;
+    right: 50%;
+    margin-right: -40px;
+    margin-bottom: 100px;
+    width: 600px;
+    height: max-content;
+    padding: 30px 50px 0px 30px;
+    opacity: 1;
+    overflow-x: hidden;
+}
+
+#info-card-container #info-card #book-info {
+    padding-bottom: 35px;
+    border-bottom: solid 1px #d6d6d6;
+    height: 216px;
+}
+
+#info-card-container #info-card #book-info #book-cover-container {
+    width: 150px;
+    height: 200px;
+    float: left;
+    margin-right: 20px;
+}
+
+#info-card-container #info-card #book-info #info-book-cover {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+
+#info-card-container #info-card #book-info .book-name {
+    margin-top: 0px;
+    height: 42px;
+}
+
+#info-card-container #info-card #book-info .book-writer {
+    margin-top: 0px;
+    margin-bottom: 20px;
+    height: 36px;
+}
+
+#info-card-container #info-card #book-info .price{
+    position: absolute;
+    top: 140px;
+    left: 380px;
+    margin-bottom: 20px;
+    font-weight: lighter;
+}
+
+#info-card-container #info-card #book-info p {
+    height: 24px;
+}
+
+#info-card-container #info-card p {
+    margin-bottom: 0px;
+}
+
+#info-card-container #info-card #book-intro {
+    padding-bottom: 20px;
+
+}
+
+#info-card-container #info-card #writer-info-container {
+    width: 100%;
+    height: 70px;
+    padding-bottom: 20px;
+}
+
+#info-card-container #info-card #writer-info-container #writer-avatar {
+    width: 70px;
+    height: auto;
+    border-radius: 50%;
+    margin-right: 20px;
+    float: left;
+}
+
+#info-card-container #info-card #writer-info-container #author-name {
+    font-size: 30px;
+}
+
+#info-card-container #info-card #writer-info-container #writer-age {
+    font-size: 20px;
+    margin-right: 40px;
+}
+
+#info-card-container #info-card #writer-info-container #writer-country {
+    font-size: 20px;
+}
+
+#info-card-container #info-card #writer-intro {
+    margin-top: 20px;
+    padding-bottom: 20px;
+}
+
+#info-card-container #info-card #writer-intro p {
+    padding-top: 20px;
+}
+
+#outer-container input {
+    width: 198px;
+    margin-right: 10px;
+    margin-bottom: 60px;
+}
+
+#outer-container textarea {
+    width: 100%;
+    resize: none;
+    margin-top: 10px;
+}
+
+#outer-container .help-bubble {
+    position: absolute;
+    width: 200px;
+    height: 40px;
+    z-index: 8;
+    opacity: 0.8;
+    display: none;
+}
+
+#outer-container .help-bubble .help-text {
+    width: 100%;
+    height: 100%;
+    background-color: #3f51b5;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    line-height: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#outer-container .help-bubble .triangle {
+    position: relative;
+    left: 50%;
+    margin-left: -10px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 8px solid;
+    border-top-color: #3f51b5;
+}
+
+#outer-container #book-edit-card {
+    position: fixed;
+    width: 500px;
+    height: 560px;
+    top: 5%;
+    left: 50%;
+    margin-top: 50px;
+    margin-left: 60px;
+    z-index: 2;
+    padding: 50px 50px 0px 30px;
+}
+
+#outer-container #book-edit-card h4 {
+    margin-top: 0px;
+    margin-bottom: 25px;
+}
+
+#outer-container #book-edit-card #change-cover {
+    position: absolute;
+    bottom: 10px;
+    left: 15px;
+}
+
+#outer-container #book-edit-card #switch-author-edit {
+    position: absolute;
+    bottom: 10px;
+    left: 115px;
+}
+
+#outer-container #book-edit-card .upload {
+    position: absolute;
+    bottom: 10px;
+    left: 215px;
+}
+
+#outer-container #book-edit-card .book-name-bubble {
+    position: absolute;
+    top: -10px;
+    left: 30px;
+}
+
+#outer-container #book-edit-card .publisher-bubble {
+    position: absolute;
+    top: 90px;
+    left: 240px;
+}
+
+#outer-container #book-edit-card .publish-date-bubble {
+    position: absolute;
+    top: -10px;
+    left: 240px;
+}
+
+#outer-container #book-edit-card .isbn-bubble {
+    position: absolute;
+    top: 90px;
+    left: 30px;
+}
+
+#outer-container #book-edit-card .price-bubble {
+    position: absolute;
+    top: 190px;
+    left: 30px;
+}
+
+#outer-container #book-edit-card .book-intro-bubble {
+    position: absolute;
+    top: 290px;
+    left: 30px;
+    width: 420px;
+}
+
+#outer-container #author-edit-card {
+    position: fixed;
+    width: 500px;
+    height: 560px;
+    top: 5%;
+    left: 50%;
+    margin-top: 50px;
+    margin-left: 60px;
+    z-index: 2;
+    padding: 50px 50px 0px 30px;
+    display: none;
+}
+
+#outer-container #author-edit-card .upload {
+    position: absolute;
+    bottom: 10px;
+    left: 215px;
+}
+
+#outer-container #author-edit-card #change-avatar {
+    position: absolute;
+    bottom: 10px;
+    left: 15px;
+}
+
+#outer-container #author-edit-card #switch-book-edit {
+    position: absolute;
+    bottom: 10px;
+    left: 115px;
+}
+
+#outer-container #author-edit-card .writer-name-bubble {
+    position: absolute;
+    top: -10px;
+    left: 30px;
+}
+
+#outer-container #author-edit-card .writer-age-bubble {
+    position: absolute;
+    top: -10px;
+    left: 240px;
+}
+
+#outer-container #author-edit-card .writer-country-bubble {
+    position: absolute;
+    top: 90px;
+    left: 30px;
+}
+
+#outer-container #author-edit-card .writer-intro-bubble {
+    position: absolute;
+    top: 190px;
+    left: 30px;
+    width: 420px;
+}
+
+#recommend-container {
+    position: absolute;
+    top: 68px;
+    margin-top: 10px;
+    width: 200px;
+    height: 0px;
+    border-radius: 0px 0px 4px 4px;
+    overflow: hidden;
+    display: block;
+    z-index: 8;
+    background-color: #3f51b5;
+    opacity: 0.8;
+}
+
+#recommend-container .recommend-author {
+    width: 100%;
+    height: 40px;
+    color: white;
+    line-height: 40px;
+    font-size: 14px;
+    font-weight: lighter;
+    padding-left: 10px;
+    transition: background-color 180ms;
+    -webkit-transition: background-color 180ms;
+    -moz-transition: background-color 180ms;
+    -webkit-transition: background-color 180ms;
+    -o-transition: background-color 180ms;
+    cursor: pointer;
+}
+
+#recommend-container .recommend-author:hover {
+    background-color: #0007b5;
+}
+
+#log-container {
+    position: fixed;
+    top: 0%;
+    left: 50%;
+    margin-left: -150px;
+    z-index: 8;
+    width: 300px;
+    height: 40px;
+}
+
+#log-container .custom-log {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    margin-top: 0px;
+    background-color: #000;
+    color: white;
+    text-align: center;
+    line-height: 40px;
+    padding: 0px;
+    opacity: 0;
+}

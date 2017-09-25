@@ -1,0 +1,665 @@
+#bg-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #2a2826;
+}
+
+#bg-container > div {
+    position: absolute;
+}
+
+#bg-container img {
+    margin: -30% auto;
+    height: 100%;
+    width: auto;
+    display: block;
+}
+
+#bg-container #bg-shade {
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    opacity: 0;
+}
+
+#top-bar-container {
+    position: fixed;
+    width: 100%;
+    height: 50px;
+    z-index: 10;
+}
+
+#top-bar-container #top-bar {
+    position: absolute;
+    color: white;
+    width: 100%;
+    height: 100%;
+}
+
+#top-bar-container #top-bar-shadow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #3f51b5;
+    box-shadow: 0 2px 2px 0px rgba(0,0,0,.1),
+    0 3px 4px 0px rgba(0,0,0,.1),
+    0 4px 6px 0px rgba(0,0,0,.1);
+    display: none;
+}
+
+@media screen and (max-width: 500px) {
+    #top-bar-container #top-bar span{
+        display: none;
+    }
+    #top-bar-container #top-bar-logo {
+        margin-top: 5px;
+        left: 50%;
+        height: 40px;
+        position: absolute;
+        width: auto;
+        margin-left: -38px;
+        display: none;
+    }
+}
+
+@media screen and (min-width: 500px) {
+    #top-bar-container #top-bar span{
+        margin-left: 20px;
+        line-height: 50px;
+        font-weight: lighter;
+    }
+    #top-bar-container #top-bar-logo {
+        display: none;
+    }
+}
+
+.custom-input {
+    /* 样式自定义 */
+
+    /* 去掉原有样式 */
+    -web-kit-appearance: none;
+    -moz-appearance: none;
+    background-color: transparent;
+
+    /* 设置圆角边框 */
+    border-radius: 4px;
+    border: 1px solid #fff;
+    outline: 0;
+
+    /* 设置字体属性 */
+    color: #fff;
+}
+
+@media screen and (max-width: 500px) {
+    #top-bar-container #top-bar .custom-input {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 96%;
+        margin-top: -18px;
+        margin-left: 2%;
+        height: 36px;
+        padding-left: 10px;
+        padding-right: 36px;
+        font-size: 14px;
+        display: none;
+    }
+
+    #top-bar-container #top-bar .icon {
+        right: 5%;
+    }
+}
+
+@media screen and (min-width: 500px) {
+    #top-bar-container #top-bar .custom-input {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -18px;
+        margin-left: -100px;
+        width: 200px;
+        height: 36px;
+        padding-left: 10px;
+        padding-right: 36px;
+        font-size: 14px;
+    }
+
+    #top-bar-container #top-bar .icon {
+        left: 50%;
+    }
+}
+
+.icon {
+    cursor: pointer;
+}
+
+#top-bar-container #top-bar .icon {
+    position: absolute;
+    top: 50%;
+    margin-top: -12px;
+    margin-left: 65px;
+    width: 24px;
+    height: 24px;
+}
+
+
+@media screen and (max-width: 500px) {
+    #top-bar-container #top-bar .avatar {
+        display: none;
+    }
+}
+
+#top-bar-container #top-bar .avatar {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    margin-top: -1.5rem;
+    width: 3rem;
+    height: 3rem;
+    background-color: #0f0f0f;
+}
+
+#top-bar-container #top-bar-search-container {
+    display: none;
+}
+
+.avatar {
+    border-radius: 50%;
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:#fff;
+    font-size: 18px;
+    font-weight: lighter;
+}
+
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:#fff;
+    font-size: 18px;
+    font-weight: lighter;
+}
+
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:#fff;
+    font-size: 18px;
+    font-weight: lighter;
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:#fff;
+    font-size: 18px;
+    font-weight: lighter;
+}
+
+#index-search-container {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    margin-top: 0px;
+}
+
+@media screen and (max-width: 600px) {
+    #index-search-container .custom-input {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -50px;
+        margin-left: -40%;
+        width: 80%;
+        height: 50px;
+        padding-left: 20px;
+        padding-right: 36px;
+        font-size: 18px;
+    }
+
+    #index-search-container .icon {
+        position: absolute;
+        left: 79%;
+        top: 50%;
+        margin-top: -40px;
+        margin-left: 0;
+        width: 30px;
+        height: 30px;
+    }
+
+    #index-search-container #recommend-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: 10px;
+        margin-left: -40%;
+        width: 80%;
+        height: 0px;
+        border: solid 1px white;
+        border-radius: 4px;
+        overflow: hidden;
+        display: none;
+    }
+
+}
+
+@media screen and (min-width: 600px) {
+    #index-search-container .custom-input {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -50px;
+        margin-left: -300px;
+        width: 600px;
+        height: 50px;
+        padding-left: 20px;
+        padding-right: 36px;
+        font-size: 18px;
+    }
+
+    #index-search-container .icon {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-top: -40px;
+        margin-left: 260px;
+        width: 30px;
+        height: 30px;
+    }
+
+    #index-search-container #recommend-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: 10px;
+        margin-left: -300px;
+        width: 600px;
+        height: 0px;
+        border: solid 1px white;
+        border-radius: 4px;
+        overflow: hidden;
+        display: none;
+    }
+
+}
+
+@media screen and (max-width: 500px) {
+    #index-search-container #logo {
+        display: none;
+    }
+}
+
+#index-search-container #logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -100px;
+    margin-top: -200px;
+    width: 200px;
+    height: auto;
+}
+
+#index-search-container h3 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -90px;
+    margin-top: -100px;
+    color: #fff;
+    font-weight: lighter;
+    font-size: 20px;
+}
+
+#index-search-container #recommend-container .recommend-author {
+    width: 100%;
+    height: 50px;
+    color: white;
+    line-height: 50px;
+    font-size: 18px;
+    font-weight: lighter;
+    padding-left: 20px;
+    transition: background-color 180ms;
+    -webkit-transition : background-color 180ms;
+    -moz-transition: background-color 180ms; /* Firefox 4 */
+    -webkit-transition: background-color 180ms; /* Safari 和 Chrome */
+    -o-transition: background-color 180ms; /* Opera */
+    cursor: pointer;
+}
+
+#index-search-container #recommend-container .recommend-author:hover {
+    background-color: rgba(0,0,0,0.4);
+}
+
+#outer-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    margin-top: 50px;
+    z-index: 1;
+    overflow: auto;
+}
+
+#search-result-container {
+    position: fixed;
+    top: 100%;
+    width: 100%;
+    height: 500%;
+    background-color: rgb(241,241,241);
+    padding-bottom: 50%;
+}
+
+
+@media screen and (max-width: 1500px) {
+    #scroll-container {
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 1500px) {
+    #scroll-container {
+        width: 1500px;
+        left: 50%;
+        margin-left: -750px;
+    }
+}
+
+
+#scroll-container {
+    position: relative;
+    height: 100%;
+    margin-top: 10%;
+    z-index: 0;
+    padding-left: 8%;
+    padding-right: 8%;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),
+    0 3px 1px -2px rgba(0,0,0,.2),
+    0 1px 5px 0 rgba(0,0,0,.12);
+    padding: 20px 20px 10px 20px;
+}
+
+@media screen and (max-width: 600px) {
+    .book-card {
+        margin-left: -150px;
+        width: 300px;
+    }
+}
+
+@media screen and (min-width: 600px) {
+    .book-card {
+        margin-left: -125px;
+        width: 250px;
+    }
+}
+
+.book-card {
+    position: relative;
+    left: 50%;
+    top: 50px;
+    margin-bottom: 50px;
+    height: auto;
+    transition: box-shadow 180ms;
+    -webkit-transition : box-shadow 180ms;
+    -moz-transition: box-shadow 180ms; /* Firefox 4 */
+    -webkit-transition: box-shadow 180ms; /* Safari 和 Chrome */
+    -o-transition: box-shadow 180ms; /* Opera */
+    cursor: pointer;
+    opacity: 0;
+    display: none;
+}
+
+.book-card:hover {/* 水平 垂直 模糊距离 阴影尺寸*/
+    box-shadow: 0 5px 30px 0 rgba(0,0,0,.18),
+    0 6px 20px -2px rgba(0,0,0,.25),
+    0 4px 40px 0 rgba(0,0,0,.18);
+}
+
+.book-card .book-cover {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+
+.book-card .book-name {
+    position: relative;
+}
+
+.book-card .book-writer {
+    position: relative;
+}
+
+#info-card-container {
+    position: fixed;
+    z-index: 9;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    display: none;
+}
+
+#info-card-container #info-close-text {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    margin-left: -88px;
+    font-size: 16px;
+    color: white;
+}
+
+@media screen and (max-width: 600px) {
+    #info-card-container #info-card {
+        position: absolute;
+        top: 50%;
+        margin-top: 30%;
+        width: 100%;
+        height: max-content;
+        padding: 30px 30px 0px 30px;
+        opacity: 0;
+        border-radius: 0px;
+    }
+}
+
+@media screen and (min-width: 600px) {
+    #info-card-container #info-card {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: 30%;
+        margin-left: -300px;
+        margin-bottom: 100px;
+        width: 600px;
+        height: max-content;
+        padding: 30px 50px 0px 30px;
+        opacity: 0;
+    }
+}
+
+#info-card-container #info-card #book-info {
+    padding-bottom: 35px;
+    border-bottom: solid 1px #d6d6d6;
+}
+
+@media screen and (max-width: 600px) {
+    #info-card-container #info-card #book-info #book-cover-container {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 600px) {
+    #info-card-container #info-card #book-info #book-cover-container {
+        width: 150px;
+        height: 200px;
+        float: left;
+        margin-right: 20px;
+    }
+}
+
+#info-card-container #info-card #book-info #info-book-cover {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+
+#info-card-container #info-card .book-name {
+    margin-top: 0px;
+}
+
+#info-card-container #info-card .book-writer{
+    margin-bottom: 20px;
+}
+
+@media screen and (max-width: 600px) {
+    #info-card-container #info-card .price {
+        position: absolute;
+        top: 140px;
+        right: 45px;
+        margin-bottom: 20px;
+        font-weight: lighter;
+    }
+}
+
+@media screen and (min-width: 600px) {
+    #info-card-container #info-card .price {
+        position: absolute;
+        top: 140px;
+        left: 380px;
+        margin-bottom: 20px;
+        font-weight: lighter;
+    }
+}
+
+#info-card-container #info-card #book-info p {
+    height: 24px;
+}
+
+#info-card-container #info-card p {
+    margin-bottom: 0px;
+}
+
+#info-card-container #info-card #book-intro {
+    padding-bottom: 20px;
+
+}
+
+#info-card-container #info-card #writer-info-container {
+    width: 100%;
+    height: 70px;
+    padding-bottom: 20px;
+}
+
+#info-card-container #info-card #writer-info-container #writer-avatar {
+    width: 70px;
+    height: auto;
+    border-radius: 50%;
+    margin-right: 20px;
+    float: left;
+}
+
+#info-card-container #info-card #writer-info-container #info-author-name {
+    font-size: 30px;
+}
+
+@media screen and (max-width: 600px) {
+    #info-card-container #info-card #writer-info-container #writer-age {
+        font-size: 16px;
+        margin-right: 5px;
+    }
+
+    #info-card-container #info-card #writer-info-container #writer-country {
+        font-size: 16px;
+    }
+}
+
+@media screen and (min-width: 600px) {
+    #info-card-container #info-card #writer-info-container #writer-age {
+        font-size: 20px;
+        margin-right: 20px;
+    }
+
+    #info-card-container #info-card #writer-info-container #writer-country {
+        font-size: 20px;
+    }
+}
+
+#info-card-container #info-card #writer-intro {
+    margin-top: 20px;
+    padding-bottom: 20px;
+}
+
+#info-card-container #info-card #writer-intro p {
+    padding-top: 20px;
+}
+
+#info-card-container #info-card #others-book-list {
+    width: 100%;
+    height: 150px;
+    margin-bottom: 60px;
+}
+
+#info-card-container #info-card #others-book-list .horizontal-list {
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 100%;
+    width: auto;
+    white-space: nowrap;
+}
+
+#info-card-container #info-card #others-book-list .horizontal-list .other-book {
+    display:inline-table;
+    width: 100px;
+    height: 130px;
+}
+
+#float-btn-group {
+    position: fixed;
+    right: 5%;
+    bottom: -20%;
+    margin-right: 70px;
+    z-index: 7;
+}
+
+#float-btn-group button {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    margin-bottom: 0px;
+    bottom: 0px;
+    border-radius: 35px;
+    background-color: orangered;
+    color: white;
+    text-align: center;
+    box-shadow: 0 2px 2px 0px rgba(0,0,0,.1),
+    0 3px 4px 0px rgba(0,0,0,.1),
+    0 4px 6px 0px rgba(0,0,0,.1);
+}
+
+#float-btn-group button img {
+    width: 35px;
+}
+
+#log-container {
+    position: fixed;
+    top: 0%;
+    left: 50%;
+    margin-left: -150px;
+    z-index: 8;
+    width: 300px;
+    height: 40px;
+}
+
+#log-container .custom-log {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    margin-top: 0px;
+    background-color: #000;
+    color: white;
+    text-align: center;
+    line-height: 40px;
+    padding: 0px;
+    opacity: 0;
+}
