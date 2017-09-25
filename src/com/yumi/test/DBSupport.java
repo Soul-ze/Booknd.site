@@ -6,12 +6,11 @@ import com.mysql.jdbc.Connection;
 public class DBSupport {
 	public static Connection createConnection() {
 		Connection conn = null;
-		/*****填写数据库相关信息(请查找数据库详情页)*****/
-		/*
+		
 		String connName="jdbc:mysql://localhost:3307/testmysql?useUnicode=true&useSSL=true",
 				username="root",
 				password="KXqaqnbklkOetDA1";
-		*/
+		
 		try {
 			Class.forName("com.mysql.jdbc.Driver"); //加载MYSQL JDBC驱动程序
 			conn = (Connection) DriverManager.getConnection(connName, username, password);
