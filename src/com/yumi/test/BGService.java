@@ -33,12 +33,14 @@ public class BGService  {
 		    }
 			DBSupport.close(pstmt);
 			DBSupport.close(rs);
+			/*
 			sql="update books set COVERURL=? where BOOKID=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, bookID+book.getCoverURL());
 			pstmt.setInt(2, bookID);
 			pstmt.executeUpdate();
 			DBSupport.close(pstmt);
+			*/
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -59,7 +61,7 @@ public class BGService  {
 			pstmt.setString(1, book.getIsbn());
 			pstmt.setString(2, book.getTitle());
 			pstmt.setInt(3, book.getAuthorID());
-			pstmt.setString(4, bookID + book.getCoverURL());
+			pstmt.setString(4, book.getCoverURL());
 			pstmt.setString(5, book.getIntro());
 			pstmt.setString(6, book.getPublisher());
 			pstmt.setString(7, book.getPublishDate());
@@ -75,6 +77,44 @@ public class BGService  {
 		return bookID;
 	}
 	
+	public int deleteBook(int bookID) {
+		int flag = 0;
+		Connection conn = DBSupport.createConnection();
+		String sql="update books set DELETESTATE=? where BOOKID=?";
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, 1);
+			pstmt.setInt(2, bookID);
+			flag = pstmt.executeUpdate();
+			DBSupport.close(pstmt);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		DBSupport.close(conn);
+		return flag;
+	}
+	
+	public int recoveryBook(int bookID) {
+		int flag = 0;
+		Connection conn = DBSupport.createConnection();
+		String sql="update books set DELETESTATE=? where BOOKID=?";
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, 0);
+			pstmt.setInt(2, bookID);
+			flag = pstmt.executeUpdate();
+			DBSupport.close(pstmt);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		DBSupport.close(conn);
+		return flag;
+	}
+	
 	public ArrayList<BookPreview> getBooks(String search) {
 		ArrayList<BookPreview> booksPreview = new ArrayList<BookPreview>(); 
 		Connection conn = DBSupport.createConnection();
@@ -86,8 +126,9 @@ public class BGService  {
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				String title = rs.getString("TITLE");
+				int deleteState = rs.getInt("DELETESTATE");
 				double searchWeight = SBC(search,title);
-				if(searchWeight != 0) {
+				if(searchWeight != 0 && deleteState != 1) {
 					// 匹配成功
 					String author = getAuthorName(rs.getInt("AUTHORID"),conn);
 					String coverURL = rs.getString("COVERURL");
@@ -118,12 +159,15 @@ public class BGService  {
 			pstmt.setInt(1, authorID);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
-				String title = rs.getString("TITLE");
-				String author = getAuthorName(authorID,conn);
-				String coverURL = rs.getString("COVERURL");
-				int bookID = rs.getInt("BOOKID");
-				BookPreview book = new BookPreview(title,author,coverURL,bookID);
-				booksPreview.add(book);
+				int deleteState = rs.getInt("DELETESTATE");
+				if(deleteState != 1) {
+					String title = rs.getString("TITLE");
+					String author = getAuthorName(authorID,conn);
+					String coverURL = rs.getString("COVERURL");
+					int bookID = rs.getInt("BOOKID");
+					BookPreview book = new BookPreview(title,author,coverURL,bookID);
+					booksPreview.add(book);
+				}
 			}
 			DBSupport.close(pstmt);
 			DBSupport.close(rs);
@@ -281,12 +325,14 @@ public class BGService  {
 		    }
 			DBSupport.close(pstmt);
 			DBSupport.close(rs);
+			/*
 			sql="update authors set PHOTO=? where AUTHORID=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, authorCreateID+author.getPhoto());
 			pstmt.setInt(2, authorCreateID);
 			pstmt.executeUpdate();
 			DBSupport.close(pstmt);
+			*/
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -305,7 +351,7 @@ public class BGService  {
 			pstmt.setString(1, author.getName());
 			pstmt.setInt(2, author.getAge());
 			pstmt.setString(3, author.getCountry());
-			pstmt.setString(4, authorID + author.getPhoto());
+			pstmt.setString(4, author.getPhoto());
 			pstmt.setString(5, author.getIntro());
 			pstmt.setInt(6, author.getAuthorID());
 			pstmt.executeUpdate();

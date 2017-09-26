@@ -7,10 +7,15 @@ public class DBSupport {
 	public static Connection createConnection() {
 		Connection conn = null;
 		
-		String connName="jdbc:mysql://localhost:3307/testmysql?useUnicode=true&useSSL=true",
-				username="root",
-				password="KXqaqnbklkOetDA1";
-		
+		String databaseName = "";
+        String host = "";
+        String port = "";
+        String username = ""; 
+        String password = ""; 
+        String dbUrl = "jdbc:mysql://";
+        String serverName = host + ":" + port + "/";
+        String connName = dbUrl + serverName + databaseName;
+        
 		try {
 			Class.forName("com.mysql.jdbc.Driver"); //加载MYSQL JDBC驱动程序
 			conn = (Connection) DriverManager.getConnection(connName, username, password);

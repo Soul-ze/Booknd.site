@@ -5,7 +5,6 @@ $().ready(function(){
     $("#index-search-container").fadeIn(400);
 
     function resizeGifAdaption() {
-        console.log("miao");
         if($(window).width() < $(window).height()) {
             $("#bg-gif").css({
                 width: "100%",
@@ -22,20 +21,9 @@ $().ready(function(){
     $(window).resize(function () {
         resizeGifAdaption();
     });
-    
-    // Test book
-    var miao;
-    miao = new Array($("#scroll-container div .book-card").length);
-    $("#scroll-container div .book-card").on("click",function () {
-        setInfoCard($(this));
-    });
-    for(var i =0;i < 12;i+=4) {
-        miao[i] = $("#scroll-container div .book-card").eq(i/4);
-        miao[i + 1] = $("#scroll-container div .book-card").eq(i/4+3);
-        miao[i + 2] = $("#scroll-container div .book-card").eq(i/4+6);
-        miao[i + 3] = $("#scroll-container div .book-card").eq(i/4+9);
+    if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
+        $("#float-btn-group").hide();
     }
-
 
     // Search recommend
     var $recommend_mother = $("#recommend-mother");
@@ -78,7 +66,8 @@ $().ready(function(){
             var $book_preview = $book_card_mother.clone();
             $book_preview.css("display", "block");
             $book_preview.attr("id", data["book" + i]["bookID"]);
-            $book_preview.children(".book-cover-container").children(".book-cover")[0].src = "images/" + data["book" + i]["coverURL"];
+            //$book_preview.children(".book-cover-container").children(".book-cover")[0].src = "images/" + data["book" + i]["coverURL"];
+            $book_preview.children(".book-cover-container").children(".book-cover")[0].src = data["book" + i]["coverURL"];
             $book_preview.children(".book-name")[0].innerText = data["book" + i]["title"];
             $book_preview.children(".book-writer")[0].innerText = data["book" + i]["author"];
             $book_preview.on("click", function () {
@@ -102,6 +91,63 @@ $().ready(function(){
             })
         }
     }
+    function deleteBook(bookID) {
+        var deleteID = bookID;
+        $.ajax({
+            type: "post",
+            url: "DeleteBook",
+            data: {
+                bookID: deleteID
+            },
+            dataType: "json",
+            beforeSend: function (XHR) {
+                //在发送以前展示等待动画
+                ShowLog("正在删除，请稍等...XD");
+            },
+            success: function(data) {
+                var state = data["state"];
+                if(state == 1) {
+                    ShowLog("删除成功<");
+                    //对已经有的书进行标记删除
+                    var $delete_card = $("#"+deleteID);
+                    //尝试提供恢复删除的功能
+                    $delete_card.children(".delete-state").fadeIn(200);
+                    closeInfoCard();
+                }
+                else {
+                    ShowLog("删除失败，请重试<");
+                }
+            }
+        });
+    }
+    function recoveryBook(bookID) {
+        var recID = bookID;
+        $.ajax({
+            type: "post",
+            url: "RecoveryBook",
+            data: {
+                bookID: recID
+            },
+            dataType: "json",
+            beforeSend: function (XHR) {
+                //在发送以前展示等待动画
+                ShowLog("正在恢复，请稍等...XD");
+            },
+            success: function(data) {
+                var state = data["state"];
+                if(state == 1) {
+                    ShowLog("恢复成功<");
+                    //对已经有的书进行标记删除
+                    var $rec_card = $("#"+recID);
+                    //尝试提供恢复删除的功能
+                    $rec_card.children(".delete-state").fadeOut(200);
+                }
+                else {
+                    ShowLog("恢复失败，请重试<");
+                }
+            }
+        });
+    }
 
     // Info card
     var open_card_y = 0;
@@ -124,39 +170,45 @@ $().ready(function(){
     function setInfoCard($this) {
         var book_id = Number($this.attr("id"));
         view_book_id = book_id;
-        console.log(view_book_id);
-        $.ajax({
-            type: "post",
-            url: "GetTargetBook",
-            data: {
-                bookID: book_id
-            },
-            dataType: "json",
-            beforeSend: function (XHR) {
-                ShowLog("正在获取书籍信息");
-            },
-            success: function(data) {
-            	$("#info-card #info-book-cover")[0].src = "images/" + data["book"]["coverURL"];
-                $("#info-card #info-book-name")[0].innerText = data["book"]["title"];
-                $("#info-card #info-book-writer")[0].innerText = data["book"]["author"];
-                $("#info-card #info-publisher")[0].innerText = data["book"]["publisher"];
-                $("#info-card #info-publish-date")[0].innerText = data["book"]["publishDate"];
-                $("#info-card #info-isbn")[0].innerText = "ISBN:" + data["book"]["isbn"];
-                $("#info-card #info-price")[0].innerText = "￥" + data["book"]["price"];
-                $("#info-card #info-book-intro")[0].innerText = data["book"]["intro"];
-                $("#info-card #info-author-name")[0].innerText = data["book"]["author"];
-                $("#info-card #info-author-intro")[0].innerText = data["book"]["authorIntro"];
-                //设置头像
-                $("#writer-avatar")[0].src = "authors/" + data["book"]["avatarURL"];
-                //年龄
-                $("#info-card #writer-age")[0].innerText = "年龄：" + data["book"]["authorAge"];
-                //城市
-                $("#info-card #writer-country")[0].innerText = "城市：" + data["book"]["authorCountry"];
-                openInfoCard();
+        if($this.children(".delete-state:visible").length != 0) {
+            //进行恢复操作
+            recoveryBook(view_book_id);
+        }
+        else {
+            $.ajax({
+                type: "post",
+                url: "GetTargetBook",
+                data: {
+                    bookID: book_id
+                },
+                dataType: "json",
+                beforeSend: function (XHR) {
+                    ShowLog("正在获取书籍信息");
+                },
+                success: function(data) {
+                    $("#info-card #info-book-cover")[0].src = data["book"]["coverURL"];
+                    $("#info-card #info-book-name")[0].innerText = data["book"]["title"];
+                    $("#info-card #info-book-writer")[0].innerText = data["book"]["author"];
+                    $("#info-card #info-publisher")[0].innerText = data["book"]["publisher"];
+                    $("#info-card #info-publish-date")[0].innerText = data["book"]["publishDate"];
+                    $("#info-card #info-isbn")[0].innerText = "ISBN:" + data["book"]["isbn"];
+                    $("#info-card #info-price")[0].innerText = "￥" + data["book"]["price"];
+                    $("#info-card #info-book-intro")[0].innerText = data["book"]["intro"];
+                    $("#info-card #info-author-name")[0].innerText = data["book"]["author"];
+                    $("#info-card #info-author-intro")[0].innerText = data["book"]["authorIntro"];
+                    $("#writer-avatar")[0].src = data["book"]["avatarURL"];
+                    //年龄
+                    $("#info-card #writer-age")[0].innerText = "年龄：" + data["book"]["authorAge"];
+                    //城市
+                    $("#info-card #writer-country")[0].innerText = "城市：" + data["book"]["authorCountry"];
+                    openInfoCard();
 
-                ShowLog("信息获取完毕√");
-            }
-        });
+                    ShowLog("信息获取完毕√");
+                }
+            });
+        }
+
+
     }
 
     $("#info-book-cover")[0].onload = function () {
@@ -170,12 +222,10 @@ $().ready(function(){
     function openInfoCard() {
         var scroll_width,top_height;
         if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
-            //console.log('手机端');
             scroll_width = 0;
             top_height = -40;
             $("#info-close-text").css("top","20%");
         }else{
-            //console.log('桌面端');
             scroll_width = 17;
             top_height = 0;
         }
@@ -188,40 +238,64 @@ $().ready(function(){
         $scroll_container.css({
             "margin-top": "+=" + (-open_card_y) +"px"
         });
-        $info_card_container.fadeIn(300,function () {
-            $info_card.animate({
-                marginTop: top_height + "%",
-                opacity: 1
-            },400,"easeOutExpo");
-        });
-        $info_card_container.scrollTop(0);
-        $("#create-book").fadeOut(400);
-        $("#edit-book").animate({
-            marginBottom: "+=100px"
-        });
+        if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
+            $info_card_container.fadeIn(300,function () {
+                $info_card.css({
+                    marginTop: top_height + "%",
+                    opacity: 1
+                });
+            });
+            $info_card_container.scrollTop(0);
+        }
+        else {
+            $info_card_container.fadeIn(300,function () {
+                $info_card.animate({
+                    marginTop: top_height + "%",
+                    opacity: 1
+                },400,"easeOutExpo");
+            });
+            $info_card_container.scrollTop(0);
+            $("#create-book").fadeOut(400);
+            $("#edit-book").animate({
+                marginBottom: "+=100px"
+            });
+        }
+
     }
 
     function closeInfoCard() {
-        $info_card.animate({
-            marginTop: "+=30%",
-            opacity: 0
-        },400,"easeInCubic",function () {
-            $info_card.css("margin-top","30%");
-            $info_card_container.fadeOut();
-            $search_result_container.css({
-                "position":"absolute",
-                "padding-right":"0px",
-                "top":"0%"
+        if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
+            $info_card.css({
+                marginTop: "+=210%",
+                opacity: 0
             });
-            $scroll_container.css({
-                "margin-top": "10%"
+            $info_card_container.delay(400);
+            $info_card_container.fadeOut(300,function () {
+                $info_card.css("margin-top", "30%");
+            })
+        }
+        else {
+            $info_card.animate({
+                marginTop: "+=30%",
+                opacity: 0
+            }, 400, "easeInCubic", function () {
+                $info_card.css("margin-top", "30%");
+                $info_card_container.fadeOut();
             });
-            $outer_container.scrollTop(open_card_y);
+            $("#create-book").fadeIn(400);
+            $("#edit-book").animate({
+                marginBottom: "-=100px"
+            });
+        }
+        $search_result_container.css({
+            "position": "absolute",
+            "padding-right": "0px",
+            "top": "0%"
         });
-        $("#create-book").fadeIn(400);
-        $("#edit-book").animate({
-            marginBottom: "-=100px"
+        $scroll_container.css({
+            "margin-top": "10%"
         });
+        $outer_container.scrollTop(open_card_y);
     }
 
 
@@ -274,7 +348,6 @@ $().ready(function(){
                 },
                 dataType: "json",
                 success: function(data) {
-                    console.log("There're " + data["size"] + " authors recommended");
                     var size = data["size"];
                     //Step 1 清空之前的容器内容以及保存的索引
                     var $container = $("#recommend-container");
@@ -307,7 +380,6 @@ $().ready(function(){
     var $top_bar_input = $("#top-bar-search-container .custom-input");
     $top_bar_input.blur(function () {
         if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
-            //console.log('手机端');
             $("#top-bar-logo").fadeIn(200);
             $top_bar_input.fadeOut(200);
         }
@@ -342,7 +414,6 @@ $().ready(function(){
             $top_bar_search_container.delay(100);
             $top_bar_search_container.fadeIn(200);
             if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
-                //console.log('手机端');
                 $("#top-bar-logo").delay(100).fadeIn(200);
             }
             var $books;
@@ -379,9 +450,6 @@ $().ready(function(){
                     ShowBooks($books);
                     author_id = -1;
                     $("#index-search-container .custom-input").fadeOut(300);
-                },
-                compelete: function (XHR, TS) {
-                    //撤销等待动画进行数据展示
                 }
             });
         }
@@ -410,8 +478,14 @@ $().ready(function(){
         $("#edit-open").trigger("click");
     });
 
+    $("#delete-book").click(function () {
+        var deleteID = view_book_id;
+        deleteBook(deleteID);
+    })
+    
     $("#top-bar span").click(function () {
         location.reload();
     });
+    
 
 });

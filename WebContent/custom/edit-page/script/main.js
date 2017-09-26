@@ -215,7 +215,7 @@ $().ready(function(){
             var book_intro_value = book_intro_input.val();
             if(book_intro_value != "") {
                 book_intro[0].innerText = book_intro_input.val();
-                var patrn = /^([a-zA-Z0-9\u4e00-\u9fa5]|[!?,.;；！？，。 -/\r\n/g<>()（）《》、—‘’“”"']){1,1024}$/;
+                var patrn = /^([a-zA-Z0-9\u4e00-\u9fa5]|[!?,.;；！？，。 -/\r\n/g()（）《》、—‘’“”"']){1,1024}$/;
                 if (!patrn.exec(book_intro_value)) {
                     book_intro_valid = 0;
                     if(book_intro_value.length<=1024) {
@@ -265,20 +265,18 @@ $().ready(function(){
         });
 
         function AjaxUploadImg() {
-            // 存储后返回在服务器位置上的URL
-            // 赋值到图片SRC上
-            frequency++;
             var fd = new FormData();
             var img = $("#img-input")[0].files[0];
-            fd.append("fileTest", img);
-            fd.append("HASH",uploadHASH + frequency);
+            //fd.append("fileTest", img);
+            //fd.append("HASH",uploadHASH + frequency);
+            fd.append("smfile",img);
             $.ajax({
-                url: "UploadCover",
                 type: "post",
+                url: "https://sm.ms/api/upload",
+                data:fd,
                 processData: false,
-                contentType: false,
-                data: fd,
                 cache: false,
+                contentType: false,
                 dataType: "json",
                 beforeSend: function () {
                     ShowLog("封面上传中...");
@@ -288,15 +286,21 @@ $().ready(function(){
                     console.log("XMLHttpRequest.status: " + XMLHttpRequest.status);
                     console.log("XMLHttpRequest.readyState: " + XMLHttpRequest.readyState);
                     console.log("textStatus: " + textStatus);
+                    ShowLog("封面上传失败<");
                 },
                 success: function(data, textStatus) {
                     //回调函数
-                    var cover_url = data["URL"];
-                    $("#info-book-cover")[0].src = cover_url;
-                    cover_valid = 1;
-                },
-                compelete: function () {
-                    ShowLog("封面上传完毕<");
+                    if(data["code"] == "success"){
+                        //上传成功
+                        $("#info-book-cover")[0].src = data["data"]["url"];
+                        cover_valid = 1;
+                        ShowLog("封面上传完毕<");
+                    }
+                    else {
+                        //上传失败
+                        cover_valid = 0;
+                        ShowLog("封面上传失败<");
+                    }
                 }
             });
         }
@@ -367,7 +371,6 @@ $().ready(function(){
                         },
                         dataType: "json",
                         success: function(data) {
-                            console.log("There're " + data["size"] + " authors recommended");
                             var size = data["size"];
                             //Step 1 清空之前的容器内容以及保存的索引
                             var $container = $("#recommend-container");
@@ -539,7 +542,7 @@ $().ready(function(){
             var writer_intro_value = writer_intro_input.val();
             if(writer_intro_value != "") {
                 writer_intro[0].innerText = writer_intro_input.val();
-                var patrn = /^([a-zA-Z0-9\u4e00-\u9fa5]|[!?,.;；！？，。 -/\r\n/g<>()（）《》、—‘’“”"']){1,1024}$/;
+                var patrn = /^([a-zA-Z0-9\u4e00-\u9fa5]|[!?,.;；！？，。 -/\r\n/g()（）《》、—‘’“”"']){1,1024}$/;
                 if (!patrn.exec(writer_intro_value)) {
                     writer_intro_valid = 0;
                     if(writer_intro_value.length<=1024) {
@@ -591,18 +594,23 @@ $().ready(function(){
         function AjaxUploadAvatar() {
             // 存储后返回在服务器位置上的URL
             // 赋值到图片SRC上
+            /*
             avatar_frequency++;
             var fd = new FormData();
-            var avatar = $("#avatar-input")[0].files[0];
+            var avatar =
             fd.append("fileTest", avatar);
             fd.append("HASH",avatarHASH + avatar_frequency);
+            */
+            var fd = new FormData();
+            var img = $("#avatar-input")[0].files[0];
+            fd.append("smfile",img);
             $.ajax({
-                url: "UploadAvatar",
                 type: "post",
+                url: "https://sm.ms/api/upload",
+                data:fd,
                 processData: false,
-                contentType: false,
-                data: fd,
                 cache: false,
+                contentType: false,
                 dataType: "json",
                 beforeSend: function () {
                     ShowLog("头像上传中...");
@@ -612,15 +620,20 @@ $().ready(function(){
                     console.log("XMLHttpRequest.status: " + XMLHttpRequest.status);
                     console.log("XMLHttpRequest.readyState: " + XMLHttpRequest.readyState);
                     console.log("textStatus: " + textStatus);
+                    ShowLog("封面上传失败<");
+                    avatar_valid = 0;
                 },
                 success: function(data, textStatus) {
                     //回调函数
-                    var avatar_url = data["URL"];
-                    $("#writer-avatar")[0].src = avatar_url;
-                    avatar_valid = 1;
-                },
-                compelete: function () {
-                    ShowLog("封面上传完毕<");
+                    if(data["code"] == "success") {
+                        $("#writer-avatar")[0].src = data["data"]["url"];
+                        ShowLog("封面上传完毕<");
+                        avatar_valid = 1;
+                    }
+                    else {
+                        ShowLog("封面上传失败<");
+                        avatar_valid = 0;
+                    }
                 }
             });
         }
@@ -693,13 +706,13 @@ $().ready(function(){
                     authorAge: age_input.val(),
                     authorCountry: country_input.val(),
                     coverURL: $("#info-book-cover")[0].src,
-                    avatarURL: $("#writer-avatar")[0].src,
-                    frequency: frequency,
-                    avatarFrequency: avatar_frequency
+                    avatarURL: $("#writer-avatar")[0].src
                 },
                 dataType: "json",
                 success: function(data) {
                     ShowLog("书籍上传完毕√");
+                    book_id = data["bookID"];
+                    author_id = data["authorID"];
                 }
             });
             //上传结束后进行页面的跳转？或者交由用户选择吧
@@ -708,7 +721,6 @@ $().ready(function(){
         }
 
     });
-    
 
     // Custom Bubbles
     function WarningBubble(bubble,message) {
@@ -778,8 +790,10 @@ $().ready(function(){
             },
             success: function(data) {
                 author_id = data["book"]["authorID"];
-                $("#info-card #info-book-cover")[0].src = "images/" + data["book"]["coverURL"];
-                $("#info-card #writer-avatar")[0].src = "authors/" + data["book"]["avatarURL"];
+                //$("#info-card #info-book-cover")[0].src = "images/" + data["book"]["coverURL"];
+                $("#info-card #info-book-cover")[0].src = data["book"]["coverURL"];
+                //$("#info-card #writer-avatar")[0].src = "authors/" + data["book"]["avatarURL"];
+                $("#info-card #writer-avatar")[0].src = data["book"]["avatarURL"];
                 book_name[0].innerText = data["book"]["title"];
                 book_name_input.val(data["book"]["title"]);
                 writer_name[0].innerText = data["book"]["author"];

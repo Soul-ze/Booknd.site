@@ -4,15 +4,12 @@
 package com.yumi.test;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -29,7 +26,6 @@ public class UIAjaxAction extends ActionSupport {
 	private File fileTest;      //接收这个上传的文件  
     private String fileTestFileName;     //Struts2提供的格式，在文件名后+FileName就是上传文件的名字
 	private String fileTestContentType;
-	private String HASH;
 	private int bookID;
 	private int authorID;
 	private String search;
@@ -98,79 +94,22 @@ public class UIAjaxAction extends ActionSupport {
 		map.put("book", book);
 		return SUCCESS;
 	}
-	
-	public String uploadCover() throws Exception {
-		HttpServletRequest request=ServletActionContext.getRequest(); 
-		String someHASH = request.getParameter("HASH");
-		String[] str = { ".jpg", ".jpeg", ".bmp", ".gif",".png" };  
-		String errorMess = "No error";
-        //限定文件大小是4MB  
-        if(fileTest == null || fileTest.length() > 4194304 ){  
-        	errorMess = "文件不存在或超出大小";
-        	System.out.println("errorMess");
-        }  
-        for (String s : str) {  
-            if (fileTestFileName.endsWith(s)) {  
-            	map = new HashMap<String, Object>();
-            	String realPath = request.getServletContext().getRealPath("") + "/images";
-                //String realPath = ServletActionContext.getServletContext().getRealPath("/images");//实际路径  
-                File saveFile = new File(new File(realPath),someHASH+s);  //在该实际路径下实例化一个文件  
-                //判断父目录是否存在  
-                if(!saveFile.getParentFile().exists()){  
-                    saveFile.getParentFile().mkdirs();
-                }  
-                map.put("URL", "images/"+someHASH+s);
-                //执行文件上传  
-                //FileUtils 类名 org.apache.commons.io.FileUtils;  
-                //是commons-io包中的，commons-fileupload 必须依赖 commons-io包实现文件上次，实际上就是将一个文件转换成流文件进行读写  
-                try{
-                	FileUtils.copyFile(fileTest, saveFile);
-                }
-                catch(IOException e) {
-                	e.printStackTrace();
-                	errorMess = "存储文件失败";
-                }
-               
-            }  
-        }  
-        map.put("Error",errorMess);
+
+	public String deleteBook() throws Exception {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		int bookID = Integer.parseInt(request.getParameter("bookID"));
+		map = new HashMap<String, Object>();
+		int state = bgs.deleteBook(bookID);
+		map.put("state", state);
 		return SUCCESS;
 	}
 	
-	public String uploadAvatar() throws Exception {
-		HttpServletRequest request=ServletActionContext.getRequest(); 
-		String someHASH = request.getParameter("HASH");
-		String[] str = { ".jpg", ".jpeg", ".bmp", ".gif",".png" };  
-		String errorMess = "No error";
-        //限定文件大小是4MB  
-        if(fileTest == null || fileTest.length() > 4194304 ){  
-        	errorMess = "文件不存在或超出大小";
-        	System.out.println("errorMess");
-        }  
-        for (String s : str) {  
-            if (fileTestFileName.endsWith(s)) {  
-            	map = new HashMap<String, Object>();
-            	String realPath = request.getServletContext().getRealPath("") + "/authors";
-                //String realPath = ServletActionContext.getServletContext().getRealPath("/authors");//实际路径  
-                File saveFile = new File(new File(realPath),someHASH+s);  //在该实际路径下实例化一个文件  
-                //判断父目录是否存在  
-                if(!saveFile.getParentFile().exists()){  
-                    saveFile.getParentFile().mkdirs();
-                }  
-                map.put("URL", "authors/"+someHASH+s);
-                //执行文件上传  
-                //FileUtils 类名 org.apache.commons.io.FileUtils;  
-                //是commons-io包中的，commons-fileupload 必须依赖 commons-io包实现文件上次，实际上就是将一个文件转换成流文件进行读写  
-                try{
-                	FileUtils.copyFile(fileTest, saveFile);
-                }
-                catch(IOException e) {
-                	e.printStackTrace();
-                	errorMess = "存储文件失败";
-                }
-            }  
-        }  
-        map.put("Error",errorMess);
+	public String recoveryBook() throws Exception {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		int bookID = Integer.parseInt(request.getParameter("bookID"));
+		map = new HashMap<String, Object>();
+		int state = bgs.recoveryBook(bookID);
+		map.put("state", state);
 		return SUCCESS;
 	}
 	
@@ -193,12 +132,8 @@ public class UIAjaxAction extends ActionSupport {
 		String authorCountry = request.getParameter("authorCountry");
 		String coverURL = request.getParameter("coverURL");
 		String avatarURL = request.getParameter("avatarURL");
-		int frequency = Integer.parseInt(request.getParameter("frequency"));
-		int avatarFrequency = Integer.parseInt(request.getParameter("avatarFrequency"));
 		
-		String avatarPostfix = avatarURL.substring(avatarURL.lastIndexOf("."), avatarURL.length());
-		
-		author = new Author(authorID, writerName, authorAge, authorCountry, avatarPostfix, writerIntro);
+		author = new Author(authorID, writerName, authorAge, authorCountry, avatarURL, writerIntro);
 		
 		if(authorID == -1) {
 			//创建作者，插入到作者表中，获取authorID
@@ -206,13 +141,11 @@ public class UIAjaxAction extends ActionSupport {
 		}
 		else {
 			//已有作者，对作者信息进行更新
-			authorID = bgs.updateAuthor(author);
+			bgs.updateAuthor(author);
 		}
 		
-		String coverPostfix = coverURL.substring(coverURL.lastIndexOf("."), coverURL.length());
-
-		book = new Book(bookID, authorID, isbn, bookName, writerName, coverPostfix, 
-				bookIntro, publisher, publishDate , avatarPostfix, authorAge, 
+		book = new Book(bookID, authorID, isbn, bookName, writerName, coverURL, 
+				bookIntro, publisher, publishDate , avatarURL, authorAge, 
 				authorCountry, writerIntro, price);
 		
 		if(editMode == 0) {
@@ -225,34 +158,9 @@ public class UIAjaxAction extends ActionSupport {
 			bgs.updateBook(book);
 		}
 		
-		if(frequency != -1) {
-			//即更改了封面
-			int lastIndex = coverURL.lastIndexOf(".");
-			String newName = bookID + coverPostfix;
-			String oldName = coverURL.substring(lastIndex-6, lastIndex) +  coverPostfix;
-			String relativePath = request.getServletContext().getRealPath("");
-			File bookCover = new File(relativePath + "/images/" + oldName);
-			File targetCover = new File(relativePath + "/images/" + newName);
-			if(targetCover.exists()) {
-				targetCover.delete();
-			}
-			bookCover.renameTo(new File(relativePath + "/images/" + newName));
-		}
-		
-		if(avatarFrequency != -1) {
-			//即更改了头像
-			int lastIndex = avatarURL.lastIndexOf(".");
-			String newName = authorID + avatarPostfix;
-			String oldName = avatarURL.substring(lastIndex-6, lastIndex) +  avatarPostfix;
-			String relativePath = request.getServletContext().getRealPath("");
-			File bookAvatar = new File(relativePath + "/authors/" + oldName);
-			File targetAvatar = new File(relativePath + "/authors/" + newName);
-			if(targetAvatar.exists()) {
-				targetAvatar.delete();
-			}
-			bookAvatar.renameTo(new File(relativePath + "/authors/" + newName));
-		}
-			
+		map = new HashMap<String, Object>();
+		map.put("bookID", bookID);
+		map.put("authorID", authorID);
 		return SUCCESS;
 	}
 
@@ -262,18 +170,6 @@ public class UIAjaxAction extends ActionSupport {
 		Author author = bgs.getTargetAuthor(authorID);
 		map = new HashMap<String, Object>();
 		map.put("author", author);
-		return SUCCESS;
-	}
-	
-	public String testJsonObject() throws Exception{
-		map = new HashMap<String, Object>();
-		BookPreview book = new BookPreview("title","author","coverURL",1234);
-		System.out.println(book.title);
-		System.out.println(book.author);
-		System.out.println(book.coverURL);
-		System.out.println(book.bookID);
-		map.put("book1", book);
-		map.put("state", "success");
 		return SUCCESS;
 	}
 
@@ -356,20 +252,6 @@ public class UIAjaxAction extends ActionSupport {
 		this.fileTestContentType = fileTestContentType;
 	}
 
-	/**
-	 * @return the hASH
-	 */
-	public String getHASH() {
-		return HASH;
-	}
-
-	/**
-	 * @param hASH the hASH to set
-	 */
-	public void setHASH(String hASH) {
-		HASH = hASH;
-	}
-	
 	/**
 	 * @return the authorID
 	 */

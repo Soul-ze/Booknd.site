@@ -346,7 +346,6 @@
     padding-bottom: 50%;
 }
 
-
 @media screen and (max-width: 1500px) {
     #scroll-container {
         width: 100%;
@@ -361,7 +360,6 @@
     }
 }
 
-
 #scroll-container {
     position: relative;
     height: 100%;
@@ -369,6 +367,38 @@
     z-index: 0;
     padding-left: 8%;
     padding-right: 8%;
+}
+
+#other-station-info {
+    height: 200px;
+    width: 100%;
+    background-color: #323232;
+    position: absolute;
+    bottom: 0px;
+    text-align: center;
+}
+
+#other-station-info p {
+    color: white;
+    font-weight: lighter;
+}
+
+#other-station-info #item-container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -177px;
+    margin-top: -80px;
+}
+
+#other-station-info .info-item {
+    float: left;
+    margin: 40px 40px 10px 40px;
+}
+
+#other-station-info img{
+    height: 30px;
+    width: auto;
 }
 
 .card {
@@ -391,6 +421,16 @@
     .book-card {
         margin-left: -125px;
         width: 250px;
+        transition: box-shadow 180ms;
+        -webkit-transition : box-shadow 180ms;
+        -moz-transition: box-shadow 180ms; /* Firefox 4 */
+        -webkit-transition: box-shadow 180ms; /* Safari 和 Chrome */
+        -o-transition: box-shadow 180ms; /* Opera */
+    }
+    .book-card:hover {/* 水平 垂直 模糊距离 阴影尺寸*/
+        box-shadow: 0 5px 30px 0 rgba(0,0,0,.18),
+        0 6px 20px -2px rgba(0,0,0,.25),
+        0 4px 40px 0 rgba(0,0,0,.18);
     }
 }
 
@@ -400,20 +440,31 @@
     top: 50px;
     margin-bottom: 50px;
     height: auto;
-    transition: box-shadow 180ms;
-    -webkit-transition : box-shadow 180ms;
-    -moz-transition: box-shadow 180ms; /* Firefox 4 */
-    -webkit-transition: box-shadow 180ms; /* Safari 和 Chrome */
-    -o-transition: box-shadow 180ms; /* Opera */
     cursor: pointer;
     opacity: 0;
+    /*display: none;*/
+}
+
+.book-card .delete-state {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    background-color: #000000;
+    opacity: 0.8;
     display: none;
 }
 
-.book-card:hover {/* 水平 垂直 模糊距离 阴影尺寸*/
-    box-shadow: 0 5px 30px 0 rgba(0,0,0,.18),
-    0 6px 20px -2px rgba(0,0,0,.25),
-    0 4px 40px 0 rgba(0,0,0,.18);
+.book-card .delete-state p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -11px;
+    margin-left: -80px;
+    font-size: 16px;
+    color: white;
 }
 
 .book-card .book-cover {
@@ -460,6 +511,11 @@
         padding: 30px 30px 0px 30px;
         opacity: 0;
         border-radius: 0px;
+        transition: all 400ms;
+        -webkit-transition : all 400ms;
+        -moz-transition: all 400ms; /* Firefox 4 */
+        -webkit-transition: all 400ms; /* Safari 和 Chrome */
+        -o-transition: all 400ms; /* Opera */
     }
 }
 

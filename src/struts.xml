@@ -3,7 +3,6 @@
         "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
         "http://struts.apache.org/dtds/struts-2.5.dtd">
 <struts>
-<constant name="struts.devMode" value="true" />
    <package name="dev" extends="json-default">
 
       <action name="AuthorBeforeSearch"
@@ -60,6 +59,22 @@
 	  <action name="GetAuthorInfo"
       		class="com.yumi.test.UIAjaxAction"
       		method="getAuthorInfo">
+      		<result name="success" type="json">
+            	<param name="root">map</param>
+            </result>
+      </action>
+
+	  <action name="DeleteBook"
+      		class="com.yumi.test.UIAjaxAction"
+      		method="deleteBook">
+      		<result name="success" type="json">
+            	<param name="root">map</param>
+            </result>
+      </action>
+      
+      <action name="RecoveryBook"
+      		class="com.yumi.test.UIAjaxAction"
+      		method="recoveryBook">
       		<result name="success" type="json">
             	<param name="root">map</param>
             </result>
